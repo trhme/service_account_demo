@@ -63,7 +63,11 @@ async def index():
 @app.get("/{ip_address}")
 async def get_location(ip_address: str):
     # validate the IP address using a regular expression
-    if not match(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$", ip_address):
+    z = match(r"^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$", ip_address)
+    if z:
+        if not (z.group(1) < 224 and z.group(2) < 256 and z.group(3) < 256 and z.group(4) < 255):
+            raise HTTPException(status_code=400, detail="Invalid IP address.")
+    else:
         raise HTTPException(status_code=400, detail="Invalid IP address.")
 
     random_city = choice(locations.cities)
