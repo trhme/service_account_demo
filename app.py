@@ -65,7 +65,7 @@ async def get_location(ip_address: str):
     # validate the IP address using a regular expression
     z = match(r"^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$", ip_address)
     if z:
-        if not (z.group(1) < 224 and z.group(2) < 256 and z.group(3) < 256 and z.group(4) < 255):
+        if not (int(z.group(1)) < 224 and int(z.group(2)) < 256 and int(z.group(3)) < 256 and int(z.group(4)) < 255):
             raise HTTPException(status_code=400, detail="Invalid IP address.")
     else:
         raise HTTPException(status_code=400, detail="Invalid IP address.")
